@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace QuickNIL {
-    class Program {
+    class QuickNIL {
         static void Main(string[] args) {
 
         }
