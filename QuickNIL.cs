@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
 using System.Text;
 using TrickyUnits;
 using NLua;
 
 namespace QuickNIL {
+
+    class NIL_API {
+        public string NILScript;
+    }
     static class QuickNIL {
 
         static void Heading() {
@@ -22,16 +26,23 @@ namespace QuickNIL {
         }
 
         static void RunScript(string[] args) {
-            var argscript = new StringBuilder("table AppArgs\n");
-            var nilscript = QuickStream.StringFromEmbed("NIL.lua");
+            var API = new NIL_API();
+            var argscript = new StringBuilder("AppArgs={}\n");
+            API.NILScript = QuickStream.StringFromEmbed("NIL.lua");
             for(int i = 0; i < args.Length; i++) {
                 if (i == 0) argscript.Append("AppArgs.Application ="); else argscript.Append($"AppArgs[{i}] = ");
-                argscript.Append($"\"{qstr.SafeString(args[i])}\")\n");
+                argscript.Append($"\"{qstr.SafeString(args[i].Replace("\\","/"))}\"\n");
             }
-            var state = new Lua;
+            var state = new Lua();
             try {
-                state.DoString($" NIL = (loadstring or load)(\"{qstr.SafeString(nilscript)}\",'NIL')();", "Internal: NIL");
-                state.DoString($"NIL.Load(\"{qstr.SafeString(argscript.ToString())}\")()", "Interal: CLI Arguments");
+                state["QNIL"] = API;
+                var initNIL = "NIL = (loadstring or load)(QNIL.NILScript)()"; //$"NIL = (loadstring or load)(\n\"{qstr.SafeString(nilscript)}\"\n,'NIL')\n()";
+                Debug.WriteLine($"initNIL: {initNIL}");
+                state.DoString(initNIL, "Internal: NIL");
+                //var initARGS = $"local act = assert(NIL.Load(\"{qstr.SafeString(argscript.ToString())}\"))\nact()";
+                //Debug.WriteLine($"--- ARGUMENTS ---\n{initARGS}\n--- END ARGUMENTS ---");
+                Debug.WriteLine($"--- ARGUMENTS ---\n{argscript.ToString()}\n--- END ARGUMENTS ---");
+                state.DoString(argscript.ToString(), "Interal: CLI Arguments");
                 var script = QuickStream.LoadString(args[0]);
                 switch (qstr.ExtractExt(args[0]).ToLower()) {
                     case "lua":
@@ -44,6 +55,7 @@ namespace QuickNIL {
                         throw new Exception("Unknown file extension!");
                 }
             } catch (Exception Fout) {
+                Debug.WriteLine($"ERROR: {Fout.Message}");
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.Write("ERROR! ");
                 Console.Beep();
@@ -57,7 +69,9 @@ namespace QuickNIL {
             if (args.Length == 0)
                 HelpScreen();
             else
-                RunScript(args);            
+                RunScript(args);
+            TrickyDebug.AttachWait();
+
         }
     }
 }
