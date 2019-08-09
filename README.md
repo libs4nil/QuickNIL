@@ -21,5 +21,6 @@ mkdir Bubble
 mkdir Bubble/NIL
 git clone https://github.com/jpbubble/NIL-isn-t-Lua Bubble/NIL
 ~~~
-After doing that you can just use Visual Studio to build QuickNIL
+After doing that you can just use Visual Studio to build QuickNIL. Please do make sure NLua is properly linked to this project, or this may not work.
+
 
