@@ -1,0 +1,5 @@
+void Hello()
+	print("Hello World!")
+end
+
+Hello()
