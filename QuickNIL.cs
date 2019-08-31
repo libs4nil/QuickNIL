@@ -21,8 +21,9 @@
 // Please note that some references to data like pictures or audio, do not automatically
 // fall under this licenses. Mostly this is noted in the respective files.
 // 
-// Version: 19.08.10
+// Version: 19.08.31
 // EndLic
+
 
 using System;
 using System.Collections.Generic;
@@ -39,7 +40,7 @@ namespace QuickNIL {
     static class QuickNIL {
 
         static void Heading() {
-            MKL.Version("QuickNIL - QuickNIL.cs","19.08.10");
+            MKL.Version("QuickNIL - QuickNIL.cs","19.08.31");
             MKL.Lic    ("QuickNIL - QuickNIL.cs","GNU General Public License 3");
             Console.WriteLine($"QuickNIL v{MKL.Newest}");
             Console.WriteLine($"(c) Jeroen P. Broks {MKL.CYear(2019)}");
@@ -102,4 +103,5 @@ namespace QuickNIL {
         }
     }
 }
+
 
