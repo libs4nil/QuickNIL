@@ -62,9 +62,10 @@ namespace QuickNIL {
             var state = new Lua();
             try {
                 state["QNIL"] = API;
-                var initNIL = "NIL = (loadstring or load)(QNIL.NILScript)()"; //$"NIL = (loadstring or load)(\n\"{qstr.SafeString(nilscript)}\"\n,'NIL')\n()";
+                var initNIL = "NIL = assert((loadstring or load)(QNIL.NILScript,\"NIL\")())"; //$"NIL = (loadstring or load)(\n\"{qstr.SafeString(nilscript)}\"\n,'NIL')\n()";
                 Debug.WriteLine($"initNIL: {initNIL}");
                 state.DoString(initNIL, "Internal: NIL");
+                state.DoString("NIL.SayFuncs[#NIL.SayFuncs+1]=function(sayit) print(\"#say \"..tostring(sayit)) end","NIL.Say Init");
                 //var initARGS = $"local act = assert(NIL.Load(\"{qstr.SafeString(argscript.ToString())}\"))\nact()";
                 //Debug.WriteLine($"--- ARGUMENTS ---\n{initARGS}\n--- END ARGUMENTS ---");
                 Debug.WriteLine($"--- ARGUMENTS ---\n{argscript.ToString()}\n--- END ARGUMENTS ---");
@@ -75,7 +76,7 @@ namespace QuickNIL {
                         state.DoString(script, $"Lua:{args[0]}");
                         break;
                     case "nil":
-                        state.DoString($"NIL.Load(\"{qstr.SafeString(script)}\")()", "NIL:{args[0]}");
+                        state.DoString($"local run = assert(NIL.Load(\"{qstr.SafeString(script)}\"))\nrun()", $"NIL:{args[0]}");
                         break;
                     default:
                         throw new Exception("Unknown file extension!");
