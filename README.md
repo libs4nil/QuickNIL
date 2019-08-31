@@ -6,10 +6,6 @@ It does NOT add any extra APIs except the basic libraries/modules Lua already ad
 
 This is just for quick experimentation with NIL, and nothing more.
 
-# WIP
-This project is still in WIP... It may not function properly, yet!
-
-
 # Compile
 
 If you want to compile this yourself, create a folder for my work, and type the following from that folder
@@ -23,4 +19,4 @@ git clone https://github.com/jpbubble/NIL-isn-t-Lua Bubble/NIL
 ~~~
 After doing that you can just use Visual Studio to build QuickNIL. Please do make sure NLua is properly linked to this project, or this may not work.
 
-
+If you want the easy way, just download the latest release.
